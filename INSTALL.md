@@ -17,7 +17,7 @@ Go with the defaults in the "wizard" presented. Chose to create a new key pair w
 
 When the instance is green and "started", log in to the machine:
 
-    ssh -i ~/.ssh/myapp.pem ubuntu@XXX.amazonaws.com
+    ssh -i ~/.ssh/snapHealthApp.pem ubuntu@XXX.amazonaws.com
 
 *Note: Replace `XXX.amazonaws.com` with the hostname or address of your instance.*
 
@@ -49,49 +49,49 @@ NPM:
 
 ## Checkout your source
 
-    sudo mkdir /var/myapp
-    sudo chown www-data:www-data /var/myapp
+    sudo mkdir /var/snapHealthApp
+    sudo chown www-data:www-data /var/snapHealthApp
 
 If your git repository is public (i.e. viewable by anyone):
 
-    sudo -Hu www-data git clone https://github.com/you/myapp.git /var/myapp
+    sudo -Hu www-data git clone https://github.com/rilkeanheart/myapp.git /var/myapp
 
 If your git repository is private:
 
     sudo -Hu www-data ssh-keygen -t rsa  # chose "no passphrase"
     sudo cat /var/www/.ssh/id_rsa.pub
-    # Add the key as a "deploy key" at https://github.com/you/myapp/admin
-    sudo -Hu www-data git clone git@github.com:you/myapp.git /var/myapp
+    # Add the key as a "deploy key" at https://github.com/rilkeanheart/my/admin
+    sudo -Hu www-data git clone git@github.com:rilkeanheart/snapHealthApp.git /var/snapHealthApp
 
 
 ## Configure & start your services
 
 Your Node.js web server:
 
-    sudo ln -s /var/myapp/init.d/myapp-httpd /etc/init.d/
-    sudo update-rc.d myapp-httpd defaults
-    sudo invoke-rc.d myapp-httpd start
+    sudo ln -s /var/snapHealthApp/init.d/snapHealthApp-httpd /etc/init.d/
+    sudo update-rc.d snapHealthApp-httpd defaults
+    sudo invoke-rc.d snapHealthApp-httpd start
     
-Optional `myapp-processor`:
+Optional `snapHealthApp-processor`:
     
-    sudo ln -s /var/myapp/init.d/myapp-processor /etc/init.d/
-    sudo update-rc.d myapp-processor defaults
-    sudo invoke-rc.d myapp-processor start
+    sudo ln -s /var/snapHealthApp/init.d/snapHealthApp-processor /etc/init.d/
+    sudo update-rc.d snapHealthApp-processor defaults
+    sudo invoke-rc.d snapHealthApp-processor start
 
 
 ## Configure Nginx
 
 There are three different kinds of setups to chose from:
 
-1. `myapp-http` -- HTTP only
-2. `myapp-https` -- HTTPS with HTTP redirecting to HTTPS
-3. `myapp-https-http` -- HTTPS and HTTP
+1. `snapHealthApp-http` -- HTTP only
+2. `snapHealthApp-https` -- HTTPS with HTTP redirecting to HTTPS
+3. `snapHealthApp-https-http` -- HTTPS and HTTP
 
-If you are using HTTPS, make sure you have added your SSL certificate and key at `/var/myapp/ssl/ssl.crt` and `/var/myapp/ssl/ssl.key`.
+If you are using HTTPS, make sure you have added your SSL certificate and key at `/var/snapHealthApp/ssl/ssl.crt` and `/var/snapHealthApp/ssl/ssl.key`.
 
-Replace `myapp-https` below with the configuration of your choice:
+Replace `snapHealthApp-https` below with the configuration of your choice:
 
-    sudo ln -sf /var/myapp/etc/nginx/sites-available/myapp-https \
+    sudo ln -sf /var/snapHealthApp/etc/nginx/sites-available/snapHealthApp-https \
                 /etc/nginx/sites-enabled/default
     sudo invoke-rc.d nginx restart
 
@@ -100,6 +100,6 @@ Replace `myapp-https` below with the configuration of your choice:
 
 Your web app should now be operational.
 
-Note that the programs `myapp-httpd` and `myapp-processor` are written in the Move programming language (like JavaScript but simpler). [Learn more at movelang.org](http://movelang.org/).
+Note that the programs `snapHealthApp-httpd` and `snapHealthApp-processor` are written in the Move programming language (like JavaScript but simpler). [Learn more at movelang.org](http://movelang.org/).
 
 If everything works, **continue by reading [WORKFLOW.md](https://github.com/rsms/ec2-webapp/blob/master/WORKFLOW.md#readme)**
